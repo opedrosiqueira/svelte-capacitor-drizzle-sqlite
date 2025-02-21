@@ -1,0 +1,5 @@
+{
+    "schema": "./src/lib/db/schema.js",
+    "dialect": "sqlite",
+    "out": "./drizzle"
+}
