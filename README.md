@@ -7,6 +7,7 @@ pnpm add -D @capacitor/cli drizzle-kit
 pnpm add @capacitor/core @capacitor/android @capacitor/filesystem drizzle-orm sql.js bootstrap bootstrap-icons
 npx cap init svelte-capacitor-drizzle-sqlite io.github.pedrosiqueira.svelteCapacitorDrizzleSqlite
 npx cap add android
+npx cap sync
 code -r .
 ```
 
@@ -232,18 +233,50 @@ Edite o arquivo `src/routes/+page.svelte`.
 
 ```
 
-Toda vez que você editar o arquivo `src\lib\db\schema.js`, execute `pnpm run migrate` para aplicar as modificações no aplicativo. O banco de dados do aplicativo deve ser excluído manualmente.
+# Teste
+
+Toda vez que você editar o arquivo `src/lib/db/schema.js`, execute `pnpm run migrate` para aplicar as modificações no aplicativo. O banco de dados do aplicativo deve ser excluído manualmente.
 
 Execute `pnpm run dev`.
 
+# Construção
 
+Execute `pnpm run build`.
 
+Instale o "commandlinetools" (https://developer.android.com/studio)
 
+Configure variável de ambiente ANDROID_HOME para a pasta `sdks` do commandlinetools.
 
+## executando no celular
 
+Habilite o developer mode no celular. Em developer options, habilite usb debugging.
 
+Execute `.\sdks\platform-tools\adb tcpip 5555`. Veja o IP do teu cel, No Android, vá em Settings -> About Phone -> Status -> Ip address. Conecte o Linux ao Android, substituindo o endereço IP pelo de seu Android: adb connect 192.168.0.1:5555.
 
-Observações:
+Execute `npx cap run android --target 192.168.200.183:5555`
+
+## gerando o apk
+
+Para instalar o sdk, execute `./bin/sdkmanager.bat --sdk_root='sdks'  "platform-tools" "build-tools;35.0.1" "platforms;android-12"` na pasta do commandlinetools.
+
+Com o sdk instalado, abra a pasta `android` do projeto e execute `./gradlew assembleDebug`. Será compilado o arquivo `android/app/build/outputs/apk/debug/app-debug.apk`.
+
+# Observações
 
 - https://getbootstrap.com/docs/5.3/components/navbar/#placement aqui fala "Fixed navbars use position: fixed, meaning they’re pulled from the normal flow of the DOM and may require custom CSS (e.g., padding-top on the <body>) to prevent overlap with other elements.". Por isso que coloquei style="margin-bottom: 4rem;" no body.
 - desafio: fazer animação? https://svelte.dev/tutorial/svelte/animations
+- será que depois de editar algum fonte devo executar `npx cap sync`?
+
+
+
+
+
+
+
+
+
+
+
+
+
+

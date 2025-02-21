@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import Toast from '$lib/components/Toast.svelte';
 	import ToDoList from '$lib/components/ToDoList.svelte';
+	import * as bootstrap from 'bootstrap';
 
 	let novaNota = $state('');
 	let notas = $state([]);
