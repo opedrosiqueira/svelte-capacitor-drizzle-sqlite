@@ -239,25 +239,39 @@ Toda vez que você editar o arquivo `src/lib/db/schema.js`, execute `pnpm run mi
 
 Execute `pnpm run dev`.
 
-# Construção
-
-Execute `pnpm run build`.
+# Preparação pra construção
 
 Instale o "commandlinetools" (https://developer.android.com/studio)
 
+Para instalar o sdk, execute `./bin/sdkmanager.bat --sdk_root='sdks'  "platform-tools" "build-tools;35.0.1" "platforms;android-12"` na pasta do commandlinetools.
+
 Configure variável de ambiente ANDROID_HOME para a pasta `sdks` do commandlinetools.
 
-## executando no celular
+Execute `.\sdks\platform-tools\adb tcpip 5555`.
 
 Habilite o developer mode no celular. Em developer options, habilite usb debugging.
 
-Execute `.\sdks\platform-tools\adb tcpip 5555`. Veja o IP do teu cel, No Android, vá em Settings -> About Phone -> Status -> Ip address. Conecte o Linux ao Android, substituindo o endereço IP pelo de seu Android: adb connect 192.168.0.1:5555.
+## executando no celular
+
+
+Veja o IP do teu cel, No Android, vá em Settings -> About Phone -> Status -> Ip address. Conecte o Linux ao Android, substituindo o endereço IP pelo de seu Android: adb connect 192.168.0.1:5555.
+
+Execute `pnpm run build`.
 
 Execute `npx cap run android --target 192.168.200.183:5555`
 
-## gerando o apk
 
-Para instalar o sdk, execute `./bin/sdkmanager.bat --sdk_root='sdks'  "platform-tools" "build-tools;35.0.1" "platforms;android-12"` na pasta do commandlinetools.
+### Debugging in Chrome (for WebView)
+If your app uses a WebView (for web content), you can debug it using Chrome DevTools:
+
+Make sure your Android device is connected and has USB debugging enabled.
+Open Chrome on your computer.
+Go to chrome://inspect in the address bar.
+You should see your device listed. Click on inspect under your app's WebView to open the Chrome DevTools for that WebView.
+
+If you want to filter the logs to show only those related to your app, you can use: adb logcat | grep YOUR_PACKAGE_NAME
+
+## gerando o apk
 
 Com o sdk instalado, abra a pasta `android` do projeto e execute `./gradlew assembleDebug`. Será compilado o arquivo `android/app/build/outputs/apk/debug/app-debug.apk`.
 

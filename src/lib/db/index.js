@@ -51,6 +51,7 @@ class Connection {
         const { data } = await Filesystem.readFile({
             path: this.dbName,
             directory: Directory.Data,
+            encoding: 'utf8'
         });
         return new SQL.Database(base64ToUint8Array(data));
     }
@@ -68,7 +69,7 @@ class Connection {
             path: this.dbName,
             data: base64Data,
             directory: Directory.Data,
-            encoding: 'base64',
+            encoding: 'utf8'
         });
     }
 
@@ -81,7 +82,7 @@ class Connection {
             path: this.dbName,
             data: base64Data,
             directory: Directory.Data,
-            encoding: 'base64',
+            encoding: 'utf8'
         });
     }
 }
