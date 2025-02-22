@@ -275,6 +275,10 @@ If you want to filter the logs to show only those related to your app, you can u
 
 Com o sdk instalado, abra a pasta `android` do projeto e execute `./gradlew assembleDebug`. Será compilado o arquivo `android/app/build/outputs/apk/debug/app-debug.apk`.
 
+Para instalar: adb install app/build/outputs/apk/debug/app-debug.apk
+
+Se não tiver o ADB, você pode copiar o .apk para o celular e instalar manualmente.
+
 # Observações
 
 - https://getbootstrap.com/docs/5.3/components/navbar/#placement aqui fala "Fixed navbars use position: fixed, meaning they’re pulled from the normal flow of the DOM and may require custom CSS (e.g., padding-top on the <body>) to prevent overlap with other elements.". Por isso que coloquei style="margin-bottom: 4rem;" no body.
