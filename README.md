@@ -235,9 +235,9 @@ Edite o arquivo `src/routes/+page.svelte`.
 
 # Teste
 
-Toda vez que você editar o arquivo `src/lib/db/schema.js`, execute `pnpm run migrate` para aplicar as modificações no aplicativo. O banco de dados do aplicativo deve ser excluído manualmente.
+Toda vez que você editar o arquivo `src/lib/db/schema.js`, execute `pnpm migrate` para aplicar as modificações no aplicativo. O banco de dados do aplicativo deve ser excluído manualmente.
 
-Execute `pnpm run dev`.
+Execute `pnpm dev`.
 
 # Preparação pra construção
 
@@ -256,7 +256,7 @@ Habilite o developer mode no celular. Em developer options, habilite usb debuggi
 
 Veja o IP do teu cel, No Android, vá em Settings -> About Phone -> Status -> Ip address. Conecte o Linux ao Android, substituindo o endereço IP pelo de seu Android: adb connect 192.168.0.1:5555.
 
-Execute `pnpm run build`.
+Execute `pnpm build`.
 
 Execute `npx cap run android --target 192.168.200.183:5555`
 
