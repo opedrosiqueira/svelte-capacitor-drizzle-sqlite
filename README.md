@@ -34,7 +34,7 @@ Modifique o valor da propriedade `"webDir"` do arquivo `capacitor.config.json` p
 
 Adicione a propriedade `"migrate": "npx drizzle-kit generate && node runmigration.js"` no objeto `"scripts"` do arquivo `package.json`.
 
-Adicione as seguintes linhas no locais adequados do arquivo `src/app.html`:
+Adicione as seguintes linhas no locais adequados do arquivo `src/app.html`: (parei-aqui errado tem que corrigir depois. precisa importar dentro do script)
 
 ```html
 <!-- essas vão no final do head -->
@@ -239,62 +239,101 @@ Toda vez que você editar o arquivo `src/lib/db/schema.js`, execute `pnpm migrat
 
 Execute `pnpm dev`.
 
-# Preparação pra construção
+## Preparando para instalar no celular ou emulador
 
-Instale o "commandlinetools" (https://developer.android.com/studio)
+Uma vez que você queira testar o app no cel ou no emulador, construa o app com `pnpm build`.
 
-Para instalar o sdk, execute `./bin/sdkmanager.bat --sdk_root='sdks'  "platform-tools" "build-tools;35.0.1" "platforms;android-12"` na pasta do commandlinetools.
+Dependendo da situação você também precisa executar `npx cap sync` nas seguintes situações:
 
-Configure variável de ambiente ANDROID_HOME para a pasta `sdks` do commandlinetools.
+1. Adiciona, remove ou atualiza plugins (Capacitor ou Cordova) ou qualquer dependências que mexem com código nativo (Android/iOS).
+2. Altera o arquivo `capacitor.config.ts` ou `capacitor.config.json` (ex: muda o `appId`, `server.url`, `backgroundColor` etc).3. 
 
-Execute `.\sdks\platform-tools\adb tcpip 5555`.
+Você não precisa rodar npx cap sync quando: Apenas edita código fonte da sua aplicação (HTML, JS, Svelte etc) ou arquivos estáticos como CSS e imagens.
 
-Habilite o developer mode no celular. Em developer options, habilite usb debugging.
+## Instalando o app no emulador
 
-## executando no celular
+Uma vez que você seguiu o tutorial de instalação do android sdk no computador, você já deve estar com um emulador de android instalado no computador. Nesse caso, Para instalar o app no emulador, execute na pasta raiz do projeto “npx cap run android” e se perguntado, escolha teu emulador.
 
+## Instalando o app no celular
 
-Veja o IP do teu cel, No Android, vá em Settings -> About Phone -> Status -> Ip address. Conecte o Linux ao Android, substituindo o endereço IP pelo de seu Android: adb connect 192.168.0.1:5555.
+### ADB
 
-Execute `pnpm build`.
+Android Debug Bridge (adb) is a command-line tool that lets you communicate with an android device. The adb command facilitates a variety of device actions, such as installing and debugging apps, transferring data to/from android device, running shell commands on android device etc.
 
-Execute `npx cap run android --target 192.168.200.183:5555`
+If you are following along this guide since start, you have already installed the adb tool.
 
+### Conectando o celular ao computador via cabo
 
-### Debugging in Chrome (for WebView)
+Ative o developer mode no celular. Como?
+
+Acesse a tela de opções do desenvolvedor. Como?
+
+Habilite developer options, usb debugging e instalar via usb.
+
+Plugue o celular no computador.
+
+Quando você conecta o celular com Depuração USB ativada, deve aparecer um popup pedindo para confiar no computador. Aceite e marque a opção "Sempre permitir"
+
+Se o popup não aparecer, desabilite developer options e rehabilite developer options, habilite usb debugging e instalar via usb.
+
+Execute no terminal “adb devices” para verificar se conectou o computador ao celular.
+
+Com o cel conectado ao computador via adb, na pasta raiz do projeto capacitor, execute “npx cap run android”, e escolha teu celular para instalar o app no celular.
+
+### Conectando o celular ao computador via wifi
+
+Se estiverem na mesma rede…
+
+Ative o developer mode no celular.
+
+Acesse a tela de opções do desenvolvedor.
+
+Habilite developer options, e wifi debugging.
+
+Veja o IP do teu cel, No Android, vá em Settings -> About Phone -> Status -> Ip address.
+
+Execute `adb tcpip 5555`.
+
+Conecte o computador ao Android, substituindo o endereço IP pelo de seu Android: adb connect 192.168.0.1:5555.
+
+Com o cel conectado ao computador via adb, na pasta raiz do projeto capacitor, execute `npx cap run android --target 192.168.200.183:5555` para instalar o app no cel via wifi.
+
+### Instalando o app manualmente
+
+Com o sdk instalado, abra a pasta `android` do projeto e execute `./gradlew assembleDebug`. Será compilado o arquivo `android/app/build/outputs/apk/debug/app-debug.apk`.
+
+Para instalar com o adb: adb install app/build/outputs/apk/debug/app-debug.apk
+
+Manualmente, você pode copiar o .apk para o celular e instalar manualmente.
+
+## Debugging in Chrome (for WebView)
+
 If your app uses a WebView (for web content), you can debug it using Chrome DevTools:
 
 Make sure your Android device is connected and has USB debugging enabled.
+
 Open Chrome on your computer.
+
 Go to chrome://inspect in the address bar.
+
 You should see your device listed. Click on inspect under your app's WebView to open the Chrome DevTools for that WebView.
 
 If you want to filter the logs to show only those related to your app, you can use: adb logcat | grep YOUR_PACKAGE_NAME
 
-## gerando o apk
+## Comandos úteis do android sdk:
 
-Com o sdk instalado, abra a pasta `android` do projeto e execute `./gradlew assembleDebug`. Será compilado o arquivo `android/app/build/outputs/apk/debug/app-debug.apk`.
+Fonte: https://www.techtutsonline.com/setup-android-command-line-tools-in-windows-10
 
-Para instalar: adb install app/build/outputs/apk/debug/app-debug.apk
+- You can use “avdmanager list avd” command to view the created AVDs.
+- To delete the AVD you just created, you can use the following command: avdmanager delete avd -n AVDv31
+- To launch a shell to run commands on connected android device or AVD, you can use “adb shell” command without quotes.
+- To transfer a file to connected android device or AVD, you can use “adb push source destination”.
+- To transfer a file from the connected android device or AVD to your computer, you can use “adb pull source destination”.
+- To shutdown the connected android device or AVD from your computer, you can use “adb shell reboot -p” command (-p stands for -poweroff).
 
-Se não tiver o ADB, você pode copiar o .apk para o celular e instalar manualmente.
+This is just a glimpse of what you can do with adb. There is a lot more to this but you got the idea anyway.
 
 # Observações
 
 - https://getbootstrap.com/docs/5.3/components/navbar/#placement aqui fala "Fixed navbars use position: fixed, meaning they’re pulled from the normal flow of the DOM and may require custom CSS (e.g., padding-top on the <body>) to prevent overlap with other elements.". Por isso que coloquei style="margin-bottom: 4rem;" no body.
 - desafio: fazer animação? https://svelte.dev/tutorial/svelte/animations
-- será que depois de editar algum fonte devo executar `npx cap sync`?
-
-
-
-
-
-
-
-
-
-
-
-
-
-
