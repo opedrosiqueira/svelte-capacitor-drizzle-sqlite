@@ -1,3 +1,5 @@
+## Criação do projeto
+
 No diretório onde deseja salvar o projeto, execute:
 
 ```sh
@@ -7,28 +9,43 @@ pnpm add -D @capacitor/cli drizzle-kit
 pnpm add @capacitor/core @capacitor/android @capacitor/filesystem drizzle-orm sql.js bootstrap bootstrap-icons
 npx cap init svelte-capacitor-drizzle-sqlite io.github.pedrosiqueira.svelteCapacitorDrizzleSqlite
 npx cap add android
-npx cap sync
 code -r .
 ```
 
 Quando solicitado, escolha as seguintes opções:
 
 ```
+┌  Welcome to the Svelte CLI! (v0.7.2)
+│
 ◇  Which template would you like?
 │  SvelteKit minimal
 │
-◇  Add type checking with Typescript?
+◇  Add type checking with TypeScript?
 │  No
 │
+◆  Project created
+│
 ◇  What would you like to add to your project? (use arrow keys / space bar)
-│  prettier, eslint, sveltekit-adapter
+│  prettier, eslint, sveltekit-adapter, drizzle
 │
 ◇  sveltekit-adapter: Which SvelteKit adapter would you like to use?
 │  static
 │
+◇  drizzle: Which database would you like to use?
+│  SQLite
+│
+◇  drizzle: Which SQLite client would you like to use?
+│  libSQL
+│
+◆  Successfully setup add-ons
+│
 ◇  Which package manager do you want to install dependencies with?
 │  pnpm
 ```
+
+Quando solicitado `? Create free Ionic account? » (Y/n)`, digite `n`.
+
+## Configuração do projeto
 
 Modifique o valor da propriedade `"webDir"` do arquivo `capacitor.config.json` para `"build"`.
 
@@ -237,83 +254,157 @@ Edite o arquivo `src/routes/+page.svelte`.
 
 Toda vez que você editar o arquivo `src/lib/db/schema.js`, execute `pnpm migrate` para aplicar as modificações no aplicativo. O banco de dados do aplicativo deve ser excluído manualmente.
 
-## Preparando para instalar no celular ou emulador
+## ✅ Preparando para instalar o app no celular ou emulador
 
-Depois que você editou o código fonte (HTML, JS, Svelte etc) ou arquivos estáticos (CSS e imagens) de teu aplicativo, e quiser testá-lo no cel ou no emulador, construa o app com `pnpm build`.
+Depois de editar o código-fonte (HTML, JS, Svelte etc.) ou arquivos estáticos (CSS, imagens), e quiser testar no celular ou emulador, **construa o app com**:
 
-Você também precisa executar `npx cap sync` nas seguintes situações:
+```bash
+pnpm build
+```
 
-1. Ainda não o executou.
-2. Adiciona, remove ou atualiza plugins (Capacitor ou Cordova) ou qualquer dependências que mexem com código nativo (Android/iOS).
-3. Altera o arquivo `capacitor.config.ts` ou `capacitor.config.json` (ex: muda o `appId`, `server.url`, `backgroundColor` etc).3. 
+Você também deve executar `npx cap sync` nas seguintes situações:
 
-Você não precisa rodar `npx cap sync` quando apenas edita código fonte (HTML, JS, Svelte etc) ou arquivos estáticos (CSS e imagens) de teu aplicativo.
+1. É a **primeira vez** que você executa o comando.
+2. Você **adicionou, removeu ou atualizou** plugins (Capacitor ou Cordova) ou bibliotecas que envolvem código nativo (Android/iOS).
+3. Alterou o arquivo `capacitor.config.ts` ou `capacitor.config.json` (ex: `appId`, `server.url`, `backgroundColor` etc.).
 
-## Instalando o app no emulador
+> 📌 Você *não precisa* rodar `npx cap sync` quando apenas edita o código-fonte ou arquivos estáticos.
 
-Uma vez que você seguiu o tutorial Preparando o Ambiente Android para CapacitorJS, você já deve estar com um emulador de android instalado no computador. Nesse caso, Para instalar o app no emulador, execute na pasta raiz do projeto “npx cap run android” e se perguntado, escolha teu emulador.
+---
 
-## Instalando o app no celular
+## 📱 Instalando o app no emulador
 
-### Conectando o celular ao computador via cabo
+Se você já seguiu o **Tutorial Preparando o Ambiente Android para CapacitorJS**, deve ter um emulador instalado. Para instalar o app no emulador:
 
-Ative o developer mode no celular. Como?
+```bash
+npx cap run android
+```
 
-Acesse a tela de opções do desenvolvedor. Como?
+Se solicitado, selecione o emulador desejado.
 
-Habilite developer options, usb debugging e instalar via usb.
+---
 
-Plugue o celular no computador.
+## 📲 Instalando o app no celular
 
-Quando você conecta o celular com Depuração USB ativada, deve aparecer um popup pedindo para confiar no computador. Aceite e marque a opção "Sempre permitir"
+Você vai precisar do programa `adb`, que pode ser instalado seguindo o **Tutorial Preparando o Ambiente Android para CapacitorJS**.
 
-Se o popup não aparecer, desabilite developer options e rehabilite developer options, habilite usb debugging e instalar via usb.
+### 🔌 Conectando o celular via cabo USB
 
-Execute no terminal “adb devices” para verificar se conectou o computador ao celular.
+1. Ative o **modo desenvolvedor** no celular (dependendo da versão, pode mudar):
+   - Vá em *Configurações > Sobre o telefone* e toque várias vezes em “Número da versão” até ativar as opções de desenvolvedor.
 
-Com o cel conectado ao computador via adb, na pasta raiz do projeto capacitor, execute “npx cap run android”, e se perguntado, escolha teu celular para instalar o app no celular.
+2. Ative as **Opções do desenvolvedor** (dependendo da versão, pode mudar):
+   - Vá até *Sistema > Avançado > Opções do desenvolvedor* e ative as opções:
+   - **Opções do desenvolvedor**
+   - **Depuração USB**
+   - **Instalar via USB** (se disponível)
 
-### Conectando o celular ao computador via wifi
+3. Conecte o celular ao computador. Aceite o pop-up “Permitir depuração USB” e marque "Sempre permitir".
 
-Se estiverem na mesma rede…
+> Se o pop-up não aparecer, desative e reative as opções do desenvolvedor e a depuração USB.
 
-Ative o developer mode no celular.
+4. No terminal, verifique a conexão:
 
-Acesse a tela de opções do desenvolvedor.
+```bash
+adb devices
+```
 
-Habilite developer options, e wifi debugging.
+5. Com o celular conectado e reconhecido, instale o app:
 
-Veja o IP do teu cel, No Android, vá em Settings -> About Phone -> Status -> Ip address.
+```bash
+npx cap run android
+```
 
-Execute `adb tcpip 5555`.
+Se solicitado, selecione o celular conectado.
 
-Conecte o computador ao Android, substituindo o endereço IP pelo de seu Android: adb connect 192.168.0.1:5555.
+---
 
-Com o cel conectado ao computador via adb, na pasta raiz do projeto capacitor, execute `npx cap run android --target 192.168.200.183:5555` para instalar o app no cel via wifi.
+### 📡 Conectando o celular via Wi-Fi
 
-### Instalando o app manualmente
+1. Ative o modo desenvolvedor e habilite a **depuração via Wi-Fi**.
 
-Com o sdk instalado, abra a pasta `android` do projeto e execute `./gradlew assembleDebug`. Será compilado o arquivo `android/app/build/outputs/apk/debug/app-debug.apk`.
+2. Descubra o IP do celular (dependendo da versão, pode mudar):  
+   *Configurações > Sobre o telefone > Status > Endereço IP*
 
-Para instalar com o adb: adb install app/build/outputs/apk/debug/app-debug.apk
+3. No terminal:
 
-Manualmente, você pode copiar o .apk para o celular e instalar manualmente.
+```bash
+adb tcpip 5555
+adb connect x.x.x.x:5555
+```
 
-## Debugging in Chrome (for WebView)
+> Substitua `x.x.x.x` pelo IP de teu celular.
 
-If your app uses a WebView (for web content), you can debug it using Chrome DevTools:
+4. Instale o app via Wi-Fi:
 
-Make sure your Android device is connected and has USB debugging enabled.
+```bash
+npx cap run android --target x.x.x.x:5555
+```
 
-Open Chrome on your computer.
+---
 
-Go to chrome://inspect in the address bar.
+### 🛠 Instalando o app manualmente
 
-You should see your device listed. Click on inspect under your app's WebView to open the Chrome DevTools for that WebView.
+Com o Android SDK instalado, você pode gerar o `.apk` manualmente:
 
-If you want to filter the logs to show only those related to your app, you can use: adb logcat | grep YOUR_PACKAGE_NAME
+```bash
+cd android
+./gradlew assembleDebug
+```
 
-# Observações
+O arquivo será gerado em:
 
-- https://getbootstrap.com/docs/5.3/components/navbar/#placement aqui fala "Fixed navbars use position: fixed, meaning they’re pulled from the normal flow of the DOM and may require custom CSS (e.g., padding-top on the <body>) to prevent overlap with other elements.". Por isso que coloquei style="margin-bottom: 4rem;" no body.
-- desafio: fazer animação? https://svelte.dev/tutorial/svelte/animations
+```
+android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+Para instalar via `adb`:
+
+```bash
+adb install android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+Ou copie o `.apk` para o celular e instale manualmente.
+
+---
+
+## 🐞 Debugando com o Chrome (WebView)
+
+Você pode depurar teu app com o Chrome DevTools:
+
+1. Conecte o celular com o `adb`.
+2. Abra o Chrome no computador.
+3. Acesse:  
+   `chrome://inspect`
+4. Clique em **"inspect"** abaixo do WebView de teu app para abrir as DevTools.
+
+> 💡 Dica: você também pode adicionar `console.log` no código e o conteúdo será exibido no log da WebView.
+
+Para acompanhar os logs gerados pelo aplicativo, filtrando pelas mensagens que você deseja ver, execute conforme teu sistema operacional:
+
+Linux:
+
+```bash
+adb logcat | grep filtro
+```
+
+Windows:
+
+```ps
+adb logcat | Select-String -Pattern filtro
+```
+
+Onde `filtro` se refere à mensagem de log que queira filtrar.
+
+---
+
+## 📝 Observações
+
+- Sobre navbar fixa com Bootstrap:
+  > “Fixed navbars usam `position: fixed`, o que pode exigir ajustes de layout, como `padding-top` no `<body>` para evitar sobreposição.” — [Bootstrap docs](https://getbootstrap.com/docs/5.3/components/navbar/#placement)  
+  Por isso foi usado `style="margin-bottom: 4rem;"` no `<body>`.
+
+- Sugestão de desafio: implementar animações em Svelte usando o tutorial:  
+  👉 https://svelte.dev/tutorial/svelte/animations
+
+---
