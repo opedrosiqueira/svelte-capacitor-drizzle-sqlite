@@ -233,34 +233,27 @@ Edite o arquivo `src/routes/+page.svelte`.
 
 ```
 
-# Teste
+# Atualizando o banco
 
 Toda vez que você editar o arquivo `src/lib/db/schema.js`, execute `pnpm migrate` para aplicar as modificações no aplicativo. O banco de dados do aplicativo deve ser excluído manualmente.
 
-Execute `pnpm dev`.
-
 ## Preparando para instalar no celular ou emulador
 
-Uma vez que você queira testar o app no cel ou no emulador, construa o app com `pnpm build`.
+Depois que você editou o código fonte (HTML, JS, Svelte etc) ou arquivos estáticos (CSS e imagens) de teu aplicativo, e quiser testá-lo no cel ou no emulador, construa o app com `pnpm build`.
 
-Dependendo da situação você também precisa executar `npx cap sync` nas seguintes situações:
+Você também precisa executar `npx cap sync` nas seguintes situações:
 
-1. Adiciona, remove ou atualiza plugins (Capacitor ou Cordova) ou qualquer dependências que mexem com código nativo (Android/iOS).
-2. Altera o arquivo `capacitor.config.ts` ou `capacitor.config.json` (ex: muda o `appId`, `server.url`, `backgroundColor` etc).3. 
+1. Ainda não o executou.
+2. Adiciona, remove ou atualiza plugins (Capacitor ou Cordova) ou qualquer dependências que mexem com código nativo (Android/iOS).
+3. Altera o arquivo `capacitor.config.ts` ou `capacitor.config.json` (ex: muda o `appId`, `server.url`, `backgroundColor` etc).3. 
 
-Você não precisa rodar npx cap sync quando: Apenas edita código fonte da sua aplicação (HTML, JS, Svelte etc) ou arquivos estáticos como CSS e imagens.
+Você não precisa rodar `npx cap sync` quando apenas edita código fonte (HTML, JS, Svelte etc) ou arquivos estáticos (CSS e imagens) de teu aplicativo.
 
 ## Instalando o app no emulador
 
-Uma vez que você seguiu o tutorial de instalação do android sdk no computador, você já deve estar com um emulador de android instalado no computador. Nesse caso, Para instalar o app no emulador, execute na pasta raiz do projeto “npx cap run android” e se perguntado, escolha teu emulador.
+Uma vez que você seguiu o tutorial Preparando o Ambiente Android para CapacitorJS, você já deve estar com um emulador de android instalado no computador. Nesse caso, Para instalar o app no emulador, execute na pasta raiz do projeto “npx cap run android” e se perguntado, escolha teu emulador.
 
 ## Instalando o app no celular
-
-### ADB
-
-Android Debug Bridge (adb) is a command-line tool that lets you communicate with an android device. The adb command facilitates a variety of device actions, such as installing and debugging apps, transferring data to/from android device, running shell commands on android device etc.
-
-If you are following along this guide since start, you have already installed the adb tool.
 
 ### Conectando o celular ao computador via cabo
 
@@ -278,7 +271,7 @@ Se o popup não aparecer, desabilite developer options e rehabilite developer op
 
 Execute no terminal “adb devices” para verificar se conectou o computador ao celular.
 
-Com o cel conectado ao computador via adb, na pasta raiz do projeto capacitor, execute “npx cap run android”, e escolha teu celular para instalar o app no celular.
+Com o cel conectado ao computador via adb, na pasta raiz do projeto capacitor, execute “npx cap run android”, e se perguntado, escolha teu celular para instalar o app no celular.
 
 ### Conectando o celular ao computador via wifi
 
@@ -319,19 +312,6 @@ Go to chrome://inspect in the address bar.
 You should see your device listed. Click on inspect under your app's WebView to open the Chrome DevTools for that WebView.
 
 If you want to filter the logs to show only those related to your app, you can use: adb logcat | grep YOUR_PACKAGE_NAME
-
-## Comandos úteis do android sdk:
-
-Fonte: https://www.techtutsonline.com/setup-android-command-line-tools-in-windows-10
-
-- You can use “avdmanager list avd” command to view the created AVDs.
-- To delete the AVD you just created, you can use the following command: avdmanager delete avd -n AVDv31
-- To launch a shell to run commands on connected android device or AVD, you can use “adb shell” command without quotes.
-- To transfer a file to connected android device or AVD, you can use “adb push source destination”.
-- To transfer a file from the connected android device or AVD to your computer, you can use “adb pull source destination”.
-- To shutdown the connected android device or AVD from your computer, you can use “adb shell reboot -p” command (-p stands for -poweroff).
-
-This is just a glimpse of what you can do with adb. There is a lot more to this but you got the idea anyway.
 
 # Observações
 
