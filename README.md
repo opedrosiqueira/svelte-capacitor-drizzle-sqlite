@@ -55,8 +55,8 @@ Adicione as seguintes linhas no locais adequados do arquivo `src/app.html`: (par
 
 ```html
 <!-- essas vão no final do head -->
-<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
 <!-- essa vai no final do body -->
 <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -68,19 +68,19 @@ Crie o arquivo `src/lib/db/schema.js`:
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
 export const nota = sqliteTable('nota', {
-	id: integer().primaryKey({ autoIncrement: true }),
-	status: integer().notNull(),
-	conteudo: text().notNull()
-})
+  id: integer().primaryKey({ autoIncrement: true }),
+  status: integer().notNull(),
+  conteudo: text().notNull()
+});
 ```
 
 Crie o arquivo `drizzle.config.json`:
 
 ```json
 {
-    "schema": "./src/lib/db/schema.js",
-    "dialect": "sqlite",
-    "out": "./drizzle"
+  "schema": "./src/lib/db/schema.js",
+  "dialect": "sqlite",
+  "out": "./drizzle"
 }
 ```
 
@@ -105,46 +105,44 @@ const DRIZZLE_FOLDER = './drizzle';
 const OUTPUT_PATH = `./static/${DB_NAME}`;
 
 async function initializeDatabase() {
-    try {
-        const SQL = await initSqlJs();
-        const client = new SQL.Database();
+  try {
+    const SQL = await initSqlJs();
+    const client = new SQL.Database();
 
-        await executeMigrations(client);
-        await saveDatabase(client);
+    await executeMigrations(client);
+    await saveDatabase(client);
 
-        console.log(`✅ Database successfully created: ${DB_NAME}`);
-    } catch (error) {
-        console.error('❌ Error initializing database:', error);
-        process.exit(1);
-    }
+    console.log(`✅ Database successfully created: ${DB_NAME}`);
+  } catch (error) {
+    console.error('❌ Error initializing database:', error);
+    process.exit(1);
+  }
 }
 
 async function executeMigrations(client) {
-    try {
-        const files = (await fs.readdir(DRIZZLE_FOLDER))
-            .filter(file => file.endsWith('.sql'))
-            .sort(); // Ensure correct execution order
+  try {
+    const files = (await fs.readdir(DRIZZLE_FOLDER)).filter((file) => file.endsWith('.sql')).sort(); // Ensure correct execution order
 
-        for (const file of files) {
-            const filePath = path.join(DRIZZLE_FOLDER, file);
-            const sqlCommands = await fs.readFile(filePath, 'utf-8');
+    for (const file of files) {
+      const filePath = path.join(DRIZZLE_FOLDER, file);
+      const sqlCommands = await fs.readFile(filePath, 'utf-8');
 
-            client.run(sqlCommands);
-            console.log(`✔ Executed migration: ${file}`);
-        }
-    } catch (error) {
-        throw new Error(`Error processing migrations: ${error.message}`);
+      client.run(sqlCommands);
+      console.log(`✔ Executed migration: ${file}`);
     }
+  } catch (error) {
+    throw new Error(`Error processing migrations: ${error.message}`);
+  }
 }
 
 async function saveDatabase(client) {
-    try {
-        const buffer = Buffer.from(client.export());
-        await fs.writeFile(OUTPUT_PATH, buffer);
-        console.log(`💾 Database saved at: ${OUTPUT_PATH}`);
-    } catch (error) {
-        throw new Error(`Error saving database: ${error.message}`);
-    }
+  try {
+    const buffer = Buffer.from(client.export());
+    await fs.writeFile(OUTPUT_PATH, buffer);
+    console.log(`💾 Database saved at: ${OUTPUT_PATH}`);
+  } catch (error) {
+    throw new Error(`Error saving database: ${error.message}`);
+  }
 }
 
 initializeDatabase();
@@ -159,86 +157,86 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 import * as schema from '$lib/db/schema'; // Import Drizzle schema
 
 function base64ToUint8Array(base64) {
-    // em breve, será implementada a melhor versão [Uint8Array.fromBase64()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/fromBase64)
-    return new Uint8Array([...atob(base64)].map((char) => char.charCodeAt(0)));
+  // em breve, será implementada a melhor versão [Uint8Array.fromBase64()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/fromBase64)
+  return new Uint8Array([...atob(base64)].map((char) => char.charCodeAt(0)));
 }
 
 function uint8ArrayToBase64(bytes) {
-    // em breve, será implementada a melhor versão [Uint8Array.toBase64()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toBase64)
-    return btoa(String.fromCharCode(...bytes));
+  // em breve, será implementada a melhor versão [Uint8Array.toBase64()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array/toBase64)
+  return btoa(String.fromCharCode(...bytes));
 }
 
 class Connection {
-    constructor(dbName = 'mydatabase.db') {
-        this.db = null;
-        this.client = null;
-        this.dbName = dbName;
+  constructor(dbName = 'mydatabase.db') {
+    this.db = null;
+    this.client = null;
+    this.dbName = dbName;
+  }
+
+  async initialize() {
+    if (this.db) {
+      console.log('Database already initialized.');
+      return this.db; // Prevent re-initialization
     }
 
-    async initialize() {
-        if (this.db) {
-            console.log('Database already initialized.');
-            return this.db; // Prevent re-initialization
-        }
-
-        if (!(await this._databaseExists())) {
-            await this._createDatabase();
-        }
-
-        const SQL = await initSqlJs();
-        this.client = await this._loadDatabase(SQL);
-        this.db = drizzle(this.client, { schema });
-
-        return this.db;
+    if (!(await this._databaseExists())) {
+      await this._createDatabase();
     }
 
-    async _databaseExists() {
-        try {
-            await Filesystem.stat({ path: this.dbName, directory: Directory.Data });
-            return true;
-        } catch {
-            return false;
-        }
+    const SQL = await initSqlJs();
+    this.client = await this._loadDatabase(SQL);
+    this.db = drizzle(this.client, { schema });
+
+    return this.db;
+  }
+
+  async _databaseExists() {
+    try {
+      await Filesystem.stat({ path: this.dbName, directory: Directory.Data });
+      return true;
+    } catch {
+      return false;
     }
+  }
 
-    async _loadDatabase(SQL) {
-        console.log('Loading database...');
-        const { data } = await Filesystem.readFile({
-            path: this.dbName,
-            directory: Directory.Data,
-        });
-        return new SQL.Database(base64ToUint8Array(data));
-    }
+  async _loadDatabase(SQL) {
+    console.log('Loading database...');
+    const { data } = await Filesystem.readFile({
+      path: this.dbName,
+      directory: Directory.Data
+    });
+    return new SQL.Database(base64ToUint8Array(data));
+  }
 
-    async _createDatabase() {
-        console.log('Creating database...');
+  async _createDatabase() {
+    console.log('Creating database...');
 
-        const response = await fetch(`/${this.dbName}`);
-        if (!response.ok) throw new Error('Failed to fetch initial database file.');
+    const response = await fetch(`/${this.dbName}`);
+    if (!response.ok) throw new Error('Failed to fetch initial database file.');
 
-        const uint8array = new Uint8Array(await response.arrayBuffer());
-        const base64Data = uint8ArrayToBase64(uint8array);
+    const uint8array = new Uint8Array(await response.arrayBuffer());
+    const base64Data = uint8ArrayToBase64(uint8array);
 
-        await Filesystem.writeFile({
-            path: this.dbName,
-            data: base64Data,
-            directory: Directory.Data,
-            encoding: 'base64',
-        });
-    }
+    await Filesystem.writeFile({
+      path: this.dbName,
+      data: base64Data,
+      directory: Directory.Data,
+      encoding: 'base64'
+    });
+  }
 
-    async save() {
-        console.log('Saving database...');
-        const data = this.client.export();
-        const base64Data = uint8ArrayToBase64(data);
+  async save() {
+    console.log('Saving database...');
+    const data = this.client.export();
+    const base64Data = uint8ArrayToBase64(data);
 
-        await Filesystem.writeFile({
-            path: this.dbName,
-            data: base64Data,
-            directory: Directory.Data,
-            encoding: 'base64',
-        });
-    }
+    await Filesystem.writeFile({
+      path: this.dbName,
+      data: base64Data,
+      directory: Directory.Data,
+      encoding: 'base64'
+    });
+  }
 }
 
 export const conn = new Connection(); // // Export singleton instance
@@ -257,8 +255,9 @@ Toda vez que você editar o arquivo `src/lib/db/schema.js`, execute `pnpm migrat
 ## 📝 Observações
 
 - Sobre navbar fixa com Bootstrap:
+
   > “Fixed navbars usam `position: fixed`, o que pode exigir ajustes de layout, como `padding-top` no `<body>` para evitar sobreposição.” — [Bootstrap docs](https://getbootstrap.com/docs/5.3/components/navbar/#placement)  
-  Por isso foi usado `style="margin-bottom: 4rem;"` no `<body>`.
+  > Por isso foi usado `style="margin-bottom: 4rem;"` no `<body>`.
 
 - Sugestão de desafio: implementar animações em Svelte usando o tutorial:  
   👉 https://svelte.dev/tutorial/svelte/animations

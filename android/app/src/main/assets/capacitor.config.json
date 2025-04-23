@@ -1,0 +1,5 @@
+{
+  "appId": "io.github.pedrosiqueira.svelteCapacitorDrizzleSqlite",
+  "appName": "svelte-capacitor-drizzle-sqlite",
+  "webDir": "build"
+}
