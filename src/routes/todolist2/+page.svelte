@@ -1,7 +1,4 @@
 <script>
-  import { eq } from 'drizzle-orm';
-  import { conn } from '$lib/db';
-  import * as tabela from '$lib/db/schema';
   import { onMount } from 'svelte';
   import Modal from '$lib/components/Modal.svelte';
   import Toast from '$lib/components/Toast.svelte';
@@ -18,21 +15,13 @@
   let alertaModal;
   let mensagemToast;
 
-  async function initDatabase() {
-    await conn.initialize();
-    notas = await conn.db.select().from(tabela.nota);
-  }
-
   async function adicionarNota() {
     novaNota = novaNota.trim();
     if (!novaNota) {
       mensagemToast.show();
       return;
     }
-
-    const [nota] = await conn.db.insert(tabela.nota).values({ conteudo: novaNota }).returning();
-    notas.push(nota);
-    conn.save();
+    notas.push({ conteudo: novaNota, status: 0 });
     novaNota = '';
   }
 
@@ -49,11 +38,6 @@
     }
 
     notaEditando.conteudo = conteudoNotaEditando;
-    conn.db
-      .update(tabela.nota)
-      .set({ conteudo: conteudoNotaEditando })
-      .where(eq(tabela.nota.id, notaEditando.id))
-      .then(() => conn.save());
     notaEditando = undefined;
   }
 
@@ -67,28 +51,17 @@
   }
 
   function confirmarExclusao() {
-    conn.db
-      .delete(tabela.nota)
-      .where(eq(tabela.nota.id, notaExcluindo.id))
-      .then(() => conn.save());
     notas.splice(notas.indexOf(notaExcluindo), 1);
   }
 
   function alterarStatus(nota, status) {
     nota.status = status;
-    conn.db
-      .update(tabela.nota)
-      .set({ status })
-      .where(eq(tabela.nota.id, nota.id))
-      .then(() => conn.save());
   }
 
   onMount(() => {
     mensagemToast = new bootstrap.Toast('#mensagemToast');
     alertaModal = new bootstrap.Modal('#alertaModal');
   });
-
-  initDatabase();
 </script>
 
 <div class="fixed-top pt-5" style="z-index: 1020;">
