@@ -90,30 +90,21 @@
   initDatabase();
 </script>
 
-<div class="sticky-top">
-  <nav class="navbar bg-body-tertiary">
-    <div class="mx-auto navbar-brand">To-Do List</div>
-  </nav>
-
-  <div class="container-fluid mt-3 input-group mb-3">
+<div class="fixed-top pt-5" style="z-index: 1020;">
+  <div class="container-fluid input-group px-4 pt-3">
     <input class="form-control form-control-lg" placeholder="Nova nota" bind:value={novaNota} onkeydown={(e) => e.key == 'Enter' && adicionarNota() && e.preventDefault()} />
     <button class="btn btn-primary input-group-text" aria-label="adicionar" onclick={adicionarNota}>
       <i class="bi bi-plus-lg"></i>
     </button>
   </div>
-
   <Toast msg={'Digite algo!'} />
 </div>
 
-<div class="container-fluid mt-3">
+<div class="container-fluid mt-5 pt-3">
   <ToDoList notas={notasFazendo} {notaEditando} bind:conteudoNotaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarNota} {excluirNota} />
   <hr />
   <ToDoList notas={notasFeitas} status={0} {notaEditando} bind:conteudoNotaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarNota} {excluirNota} />
 </div>
-
-<footer class="navbar bg-body-tertiary fixed-bottom">
-  <div class="container-fluid">Made with SvelteKit, CapacitorJS, Drizzle, Sql.js and Bootstrap</div>
-</footer>
 
 <div class="modal fade" id="alertaModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">

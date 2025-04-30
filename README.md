@@ -254,11 +254,6 @@ Toda vez que você editar o arquivo `src/lib/db/schema.js`, execute `pnpm migrat
 
 ## 📝 Observações
 
-- Sobre navbar fixa com Bootstrap:
-
-  > “Fixed navbars usam `position: fixed`, o que pode exigir ajustes de layout, como `padding-top` no `<body>` para evitar sobreposição.” — [Bootstrap docs](https://getbootstrap.com/docs/5.3/components/navbar/#placement)  
-  > Por isso foi usado `style="margin-bottom: 4rem;"` no `<body>`.
-
 - Sugestão de desafio: implementar animações em Svelte usando o tutorial:  
   👉 https://svelte.dev/tutorial/svelte/animations
 

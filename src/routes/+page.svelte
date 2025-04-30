@@ -1,4 +1,4 @@
-<ul>
-  <li><a href="todolist">Lista de tarefas</a></li>
-  <li><a href="senha/mateus">Gerador de Senhas do Mateus</a></li>
-</ul>
+<div class="position-absolute top-50 start-50 translate-middle text-center">
+  <p>Bem vindo ao meu app!</p>
+  <p>Acesse as outras telas pelo menu lateral.</p>
+</div>
