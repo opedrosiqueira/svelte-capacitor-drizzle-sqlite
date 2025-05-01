@@ -1,4 +1,4 @@
-CREATE TABLE `nota` (
+CREATE TABLE `tarefa` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`status` integer NOT NULL,
 	`conteudo` text NOT NULL

@@ -67,7 +67,7 @@ Crie o arquivo `src/lib/db/schema.js`:
 ```js
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
-export const nota = sqliteTable('nota', {
+export const tarefa = sqliteTable('tarefa', {
   id: integer().primaryKey({ autoIncrement: true }),
   status: integer().notNull(),
   conteudo: text().notNull()
@@ -254,7 +254,3 @@ Toda vez que você editar o arquivo `src/lib/db/schema.js`, execute `pnpm migrat
 
 ## 📝 Observações
 
-- Sugestão de desafio: implementar animações em Svelte usando o tutorial:  
-  👉 https://svelte.dev/tutorial/svelte/animations
-
----

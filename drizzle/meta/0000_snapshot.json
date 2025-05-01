@@ -4,8 +4,8 @@
   "id": "0782f8f7-feeb-40bc-8349-070d0fdf1317",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "nota": {
-      "name": "nota",
+    "tarefa": {
+      "name": "tarefa",
       "columns": {
         "id": {
           "name": "id",

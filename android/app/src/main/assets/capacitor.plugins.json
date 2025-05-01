@@ -1,6 +1,6 @@
 [
-  {
-    "pkg": "@capacitor/filesystem",
-    "classpath": "com.capacitorjs.plugins.filesystem.FilesystemPlugin"
-  }
+	{
+		"pkg": "@capacitor/filesystem",
+		"classpath": "com.capacitorjs.plugins.filesystem.FilesystemPlugin"
+	}
 ]

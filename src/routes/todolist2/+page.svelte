@@ -5,77 +5,74 @@
   import ToDoList from '$lib/components/ToDoList.svelte';
   import * as bootstrap from 'bootstrap';
 
-  let novaNota = $state('');
-  let notas = $state([]);
-  let notasFazendo = $derived(notas.filter((nota) => nota.status == 0));
-  let notasFeitas = $derived(notas.filter((nota) => nota.status == 1));
-  let conteudoNotaEditando = $state('');
-  let notaEditando = $state();
-  let notaExcluindo;
-  let alertaModal;
+  let novaTarefa = $state('');
+  let tarefas = $state([]);
+  let tarefasFazendo = $derived(tarefas.filter((tarefa) => tarefa.status == 0));
+  let tarefasFeitas = $derived(tarefas.filter((tarefa) => tarefa.status == 1));
+  let conteudoTarefaEditando = $state('');
+  let tarefaEditando = $state();
+  let tarefaExcluindo;
   let mensagemToast;
 
-  async function adicionarNota() {
-    novaNota = novaNota.trim();
-    if (!novaNota) {
+  async function adicionarTarefa() {
+    novaTarefa = novaTarefa.trim();
+    if (!novaTarefa) {
       mensagemToast.show();
       return;
     }
-    notas.push({ conteudo: novaNota, status: 0 });
-    novaNota = '';
+    tarefas.push({ conteudo: novaTarefa, status: 0 });
+    novaTarefa = '';
   }
 
-  function editarNota(nota) {
-    notaEditando = nota;
-    conteudoNotaEditando = nota.conteudo;
+  function editarTarefa(tarefa) {
+    tarefaEditando = tarefa;
+    conteudoTarefaEditando = tarefa.conteudo;
   }
 
   function confirmarEdicao() {
-    conteudoNotaEditando = conteudoNotaEditando.trim();
-    if (!conteudoNotaEditando) {
+    conteudoTarefaEditando = conteudoTarefaEditando.trim();
+    if (!conteudoTarefaEditando) {
       mensagemToast.show();
       return;
     }
 
-    notaEditando.conteudo = conteudoNotaEditando;
-    notaEditando = undefined;
+    tarefaEditando.conteudo = conteudoTarefaEditando;
+    tarefaEditando = undefined;
   }
 
   function cancelarEdicao() {
-    notaEditando = undefined;
+    tarefaEditando = undefined;
   }
 
-  function excluirNota(nota) {
-    notaExcluindo = nota;
-    alertaModal.show();
+  function excluirTarefa(tarefa) {
+    tarefaExcluindo = tarefa;
   }
 
   function confirmarExclusao() {
-    notas.splice(notas.indexOf(notaExcluindo), 1);
+    tarefas.splice(tarefas.indexOf(tarefaExcluindo), 1);
   }
 
-  function alterarStatus(nota, status) {
-    nota.status = status;
+  function alterarStatus(tarefa, status) {
+    tarefa.status = status;
   }
 
   onMount(() => {
     mensagemToast = new bootstrap.Toast('#mensagemToast');
-    alertaModal = new bootstrap.Modal('#alertaModal');
   });
 </script>
 
 <div class="fixed-top pt-5" style="z-index: 1020;">
-  <form class="container-fluid input-group px-4 pt-3" onsubmit={adicionarNota}>
-    <input class="form-control form-control-lg" placeholder="Nova nota" bind:value={novaNota} />
+  <form class="container-fluid input-group px-4 pt-3" onsubmit={adicionarTarefa}>
+    <input class="form-control form-control-lg" placeholder="Nova tarefa" bind:value={novaTarefa} />
     <button type="submit" class="btn btn-primary input-group-text" aria-label="adicionar"> <i class="bi bi-plus-lg"></i> </button>
   </form>
   <Toast msg={'Digite algo!'} />
 </div>
 
 <div class="container-fluid mt-5 pt-3">
-  <ToDoList notas={notasFazendo} {notaEditando} bind:conteudoNotaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarNota} {excluirNota} />
+  <ToDoList tarefas={tarefasFazendo} {tarefaEditando} bind:conteudoTarefaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarTarefa} {excluirTarefa} />
   <hr />
-  <ToDoList notas={notasFeitas} {notaEditando} bind:conteudoNotaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarNota} {excluirNota} />
+  <ToDoList tarefas={tarefasFeitas} {tarefaEditando} bind:conteudoTarefaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarTarefa} {excluirTarefa} />
 </div>
 
-<Modal msg={'Deseja excluir a nota?'} {confirmarExclusao} />
+<Modal msg={'Deseja excluir a tarefa?'} acao={confirmarExclusao} />

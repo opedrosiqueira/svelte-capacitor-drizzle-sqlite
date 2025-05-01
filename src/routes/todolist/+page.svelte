@@ -8,101 +8,98 @@
   import ToDoList from '$lib/components/ToDoList.svelte';
   import * as bootstrap from 'bootstrap';
 
-  let novaNota = $state('');
-  let notas = $state([]);
-  let notasFazendo = $derived(notas.filter((nota) => nota.status == 0));
-  let notasFeitas = $derived(notas.filter((nota) => nota.status == 1));
-  let conteudoNotaEditando = $state('');
-  let notaEditando = $state();
-  let notaExcluindo;
-  let alertaModal;
+  let novaTarefa = $state('');
+  let tarefas = $state([]);
+  let tarefasFazendo = $derived(tarefas.filter((tarefa) => tarefa.status == 0));
+  let tarefasFeitas = $derived(tarefas.filter((tarefa) => tarefa.status == 1));
+  let conteudoTarefaEditando = $state('');
+  let tarefaEditando = $state();
+  let tarefaExcluindo;
   let mensagemToast;
 
   async function initDatabase() {
     await conn.initialize();
-    notas = await conn.db.select().from(tabela.nota);
+    tarefas = await conn.db.select().from(tabela.tarefa);
   }
 
-  async function adicionarNota() {
-    novaNota = novaNota.trim();
-    if (!novaNota) {
+  async function adicionarTarefa() {
+    novaTarefa = novaTarefa.trim();
+    if (!novaTarefa) {
       mensagemToast.show();
       return;
     }
 
-    const [nota] = await conn.db.insert(tabela.nota).values({ conteudo: novaNota }).returning();
-    notas.push(nota);
+    const [tarefa] = await conn.db.insert(tabela.tarefa).values({ conteudo: novaTarefa }).returning();
+    tarefas.push(tarefa);
     conn.save();
-    novaNota = '';
+    novaTarefa = '';
   }
 
-  function editarNota(nota) {
-    notaEditando = nota;
-    conteudoNotaEditando = nota.conteudo;
+  function editarTarefa(tarefa) {
+    tarefaEditando = tarefa;
+    conteudoTarefaEditando = tarefa.conteudo;
   }
 
   function confirmarEdicao() {
-    conteudoNotaEditando = conteudoNotaEditando.trim();
-    if (!conteudoNotaEditando) {
+    conteudoTarefaEditando = conteudoTarefaEditando.trim();
+    if (!conteudoTarefaEditando) {
       mensagemToast.show();
       return;
     }
 
-    notaEditando.conteudo = conteudoNotaEditando;
+    tarefaEditando.conteudo = conteudoTarefaEditando;
     conn.db
-      .update(tabela.nota)
-      .set({ conteudo: conteudoNotaEditando })
-      .where(eq(tabela.nota.id, notaEditando.id))
+      .update(tabela.tarefa)
+      .set({ conteudo: conteudoTarefaEditando })
+      .where(eq(tabela.tarefa.id, tarefaEditando.id))
       .then(() => conn.save());
-    notaEditando = undefined;
+    tarefaEditando = undefined;
   }
 
   function cancelarEdicao() {
-    notaEditando = undefined;
+    tarefaEditando = undefined;
   }
 
-  function excluirNota(nota) {
-    notaExcluindo = nota;
-    alertaModal.show();
+  function excluirTarefa(tarefa) {
+    tarefaExcluindo = tarefa;
   }
 
   function confirmarExclusao() {
     conn.db
-      .delete(tabela.nota)
-      .where(eq(tabela.nota.id, notaExcluindo.id))
+      .delete(tabela.tarefa)
+      .where(eq(tabela.tarefa.id, tarefaExcluindo.id))
       .then(() => conn.save());
-    notas.splice(notas.indexOf(notaExcluindo), 1);
+    tarefas.splice(tarefas.indexOf(tarefaExcluindo), 1);
   }
 
-  function alterarStatus(nota, status) {
-    nota.status = status;
+  function alterarStatus(tarefa, status) {
+    tarefa.status = status;
     conn.db
-      .update(tabela.nota)
+      .update(tabela.tarefa)
       .set({ status })
-      .where(eq(tabela.nota.id, nota.id))
+      .where(eq(tabela.tarefa.id, tarefa.id))
       .then(() => conn.save());
   }
 
   onMount(() => {
     mensagemToast = new bootstrap.Toast('#mensagemToast');
-    alertaModal = new bootstrap.Modal('#alertaModal');
   });
 
   initDatabase();
 </script>
 
 <div class="fixed-top pt-5" style="z-index: 1020;">
-  <form class="container-fluid input-group px-4 pt-3" onsubmit={adicionarNota}>
-    <input class="form-control form-control-lg" placeholder="Nova nota" bind:value={novaNota} />
+  <form class="container-fluid input-group px-4 pt-3" onsubmit={adicionarTarefa}>
+    <input class="form-control form-control-lg" placeholder="Nova tarefa" bind:value={novaTarefa} />
     <button type="submit" class="btn btn-primary input-group-text" aria-label="adicionar"> <i class="bi bi-plus-lg"></i> </button>
   </form>
   <Toast msg={'Digite algo!'} />
 </div>
 
 <div class="container-fluid mt-5 pt-3">
-  <ToDoList notas={notasFazendo} {notaEditando} bind:conteudoNotaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarNota} {excluirNota} />
+  <ToDoList tarefas={tarefasFazendo} {tarefaEditando} bind:conteudoTarefaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarTarefa} {excluirTarefa} />
   <hr />
-  <ToDoList notas={notasFeitas} {notaEditando} bind:conteudoNotaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarNota} {excluirNota} />
+  <ToDoList tarefas={tarefasFeitas} {tarefaEditando} bind:conteudoTarefaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarTarefa} {excluirTarefa} />
 </div>
 
-<Modal msg={'Deseja excluir a nota?'} {confirmarExclusao} />
+<Modal msg={'Deseja excluir a tarefa?'} acao={confirmarExclusao} />
