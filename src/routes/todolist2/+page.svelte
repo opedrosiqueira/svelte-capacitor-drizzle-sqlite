@@ -7,8 +7,8 @@
 
   let novaTarefa = $state('');
   let tarefas = $state([]);
-  let tarefasFazendo = $derived(tarefas.filter((tarefa) => tarefa.status == 0));
-  let tarefasFeitas = $derived(tarefas.filter((tarefa) => tarefa.status == 1));
+  let tarefasPendentes = $derived(tarefas.filter((tarefa) => tarefa.status == 0));
+  let tarefasConcluidas = $derived(tarefas.filter((tarefa) => tarefa.status == 1));
   let conteudoTarefaEditando = $state('');
   let tarefaEditando = $state();
   let tarefaExcluindo;
@@ -70,9 +70,9 @@
 </div>
 
 <div class="container-fluid mt-5 pt-3">
-  <ToDoList tarefas={tarefasFazendo} {tarefaEditando} bind:conteudoTarefaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarTarefa} {excluirTarefa} />
+  <ToDoList tarefas={tarefasPendentes} {tarefaEditando} bind:conteudoTarefaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarTarefa} {excluirTarefa} />
   <hr />
-  <ToDoList tarefas={tarefasFeitas} {tarefaEditando} bind:conteudoTarefaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarTarefa} {excluirTarefa} />
+  <ToDoList tarefas={tarefasConcluidas} {tarefaEditando} bind:conteudoTarefaEditando {confirmarEdicao} {cancelarEdicao} {alterarStatus} {editarTarefa} {excluirTarefa} />
 </div>
 
 <Modal msg={'Deseja excluir a tarefa?'} acao={confirmarExclusao} />
