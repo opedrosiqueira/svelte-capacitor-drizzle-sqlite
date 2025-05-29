@@ -1,3 +1,11 @@
+<script>
+  import * as bootstrap from 'bootstrap';
+  import { onMount } from 'svelte';
+  onMount(() => {
+    document.querySelectorAll('a.nav-link').forEach((e) => e.addEventListener('click', () => bootstrap.Offcanvas.getInstance(document.getElementById('mySideBar')).hide()));
+  });
+</script>
+
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mySideBar" style="max-width: 80%;">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title">Offcanvas</h5>
@@ -7,6 +15,7 @@
     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
       <li class="nav-item"><a class="nav-link active" href="/todolist">Lista de Tarefas</a></li>
       <li class="nav-item"><a class="nav-link active" href="/senha">Gerador de Senhas</a></li>
+      <li class="nav-item"><a class="nav-link active" href="/calculadora">Calculadora</a></li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown">Dropdown</a>
         <ul class="dropdown-menu">

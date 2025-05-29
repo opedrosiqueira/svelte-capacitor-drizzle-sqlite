@@ -1,1 +1,0 @@
-import{t as e,a as o}from"../chunks/gz45dRRV.js";import"../chunks/J89X8i_0.js";var p=e('<div class="position-absolute top-50 start-50 translate-middle text-center"><p>Bem vindo ao meu app!</p> <p>Acesse as outras telas pelo menu lateral.</p></div>');function i(t){var a=p();o(t,a)}export{i as component};

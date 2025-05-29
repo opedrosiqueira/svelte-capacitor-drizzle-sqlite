@@ -1,0 +1,31 @@
+<div class="text-center mt-3">
+  <div class="row mb-2">
+    <div class="col"><input class="form-control" readonly /></div>
+  </div>
+  <div class="row row-cols-4 g-2">
+    <div class="col"><button class="btn bg-primary-subtle w-100">CE</button></div>
+    <div class="col"><button class="btn bg-primary-subtle w-100">C</button></div>
+    <div class="col"><button class="btn bg-primary-subtle w-100">±</button></div>
+    <div class="col"><button class="btn bg-primary-subtle w-100">%</button></div>
+
+    <div class="col"><button class="btn btn-primary w-100">7</button></div>
+    <div class="col"><button class="btn btn-primary w-100">8</button></div>
+    <div class="col"><button class="btn btn-primary w-100">9</button></div>
+    <div class="col"><button class="btn bg-primary-subtle w-100">/</button></div>
+
+    <div class="col"><button class="btn btn-primary w-100">4</button></div>
+    <div class="col"><button class="btn btn-primary w-100">5</button></div>
+    <div class="col"><button class="btn btn-primary w-100">6</button></div>
+    <div class="col"><button class="btn bg-primary-subtle w-100">*</button></div>
+
+    <div class="col"><button class="btn btn-primary w-100">1</button></div>
+    <div class="col"><button class="btn btn-primary w-100">2</button></div>
+    <div class="col"><button class="btn btn-primary w-100">3</button></div>
+    <div class="col"><button class="btn bg-primary-subtle w-100">-</button></div>
+
+    <div class="col"><button class="btn btn-primary w-100">0</button></div>
+    <div class="col"><button class="btn bg-primary-subtle w-100">.</button></div>
+    <div class="col"><button class="btn bg-primary-subtle w-100">=</button></div>
+    <div class="col"><button class="btn bg-primary-subtle w-100">+</button></div>
+  </div>
+</div>
